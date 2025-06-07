@@ -1,0 +1,143 @@
+{% comment %}
+  Promotional Banner Block
+{% endcomment %}
+
+<div class="promotional-banner-wrapper">
+  <div id="promotional-banner-{{ section.id }}" class="promotional-banner">
+    <div class="banner-content">
+      <span class="banner-text">🎉 {{ section.settings.banner_text | default: 'Free Shipping on All Orders!' }} 🎉</span>
+      <button class="banner-close" onclick="closeBanner('{{ section.id }}')" aria-label="Close banner">✕</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .promotional-banner-wrapper {
+      position: fixed;
+      top: 0px;
+      z-index: 1000;
+      width: 100%
+  }
+  .promotional-banner {
+    background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+    color: white;
+    text-align: center;
+    padding: 12px 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    position: relative;
+    z-index: 9999;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    animation: slideDown 0.3s ease-out;
+  }
+  
+  .banner-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .banner-close {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    padding: 6px 10px;
+    margin-left: 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+  }
+  
+  .banner-close:hover {
+    background: rgba(255,255,255,0.3);
+  }
+  
+  @keyframes slideDown {
+    from {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .promotional-banner {
+      font-size: 14px;
+      padding: 10px 15px;
+    }
+    
+    .banner-content {
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .banner-close {
+      margin-left: 0;
+    }
+  }
+</style>
+
+<script>
+  function closeBanner(sectionId) {
+    const banner = document.getElementById('promotional-banner-' + sectionId);
+    if (banner) {
+      banner.style.animation = 'slideUp 0.3s ease-in forwards';
+      setTimeout(() => {
+        banner.style.display = 'none';
+      }, 300);
+    }
+    
+    // Store preference in localStorage
+    localStorage.setItem('promotional-banner-closed', 'true');
+  }
+  
+  // Check if banner was previously closed
+  document.addEventListener('DOMContentLoaded', function() {
+    if (localStorage.getItem('promotional-banner-closed') === 'true') {
+      const banners = document.querySelectorAll('.promotional-banner');
+      banners.forEach(banner => banner.style.display = 'none');
+    }
+  });
+</script>
+
+<style>
+  @keyframes slideUp {
+    from {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Promotional Banner",
+  "target": "body",
+  "settings": [
+    {
+      "type": "text",
+      "id": "banner_text",
+      "label": "Banner Text",
+      "default": "Free Shipping on All Orders!"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_banner",
+      "label": "Show Banner",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

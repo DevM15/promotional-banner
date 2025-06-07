@@ -1,0 +1,7 @@
+name = "promotional-banner"
+type = "theme_app_extension"
+
+[extension_points]
+
+[[extension_points.liquid_body_start]]
+target = "liquid_body_start"
