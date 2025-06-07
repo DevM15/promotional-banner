@@ -2,7 +2,7 @@
 
 name = "Promotional Banner App"
 client_id = "57cc9b5b15bad1341a9ce466122c87d9"
-application_url = "https://your-app-url.vercel.app"
+application_url = "https://promotional-banner.vercel.app/"
 embedded = true
 
 [access_scopes]
